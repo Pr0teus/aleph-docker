@@ -1,0 +1,49 @@
+version: "2.1"
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.3.0
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx1g -Xms1g"
+      # disable X-Pack
+      # see https://www.elastic.co/guide/en/x-pack/current/xpack-settings.html
+      #     https://www.elastic.co/guide/en/x-pack/current/installing-xpack.html#xpack-enabling
+      xpack.security.enabled: "false"
+      xpack.monitoring.enabled: "false"
+      xpack.graph.enabled: "false"
+      xpack.watcher.enabled: "false"
+    volumes:
+      - ./elasticsearch/data:/usr/share/elasticsearch/data
+    networks:
+      - default
+  kibana:
+      image: docker.elastic.co/kibana/kibana:5.3.0
+      volumes:
+        - ./kibana/config/:/usr/share/kibana/config
+      ports:
+        - "5601:5601"
+      networks:
+        - default
+      depends_on:
+        - elasticsearch
+  aleph:
+      build: ./aleph/build
+      image: pr0teus/aleph:0.2
+      volumes:
+        - ./aleph/samples/:/opt/data/samples/
+        - ./aleph/temp/:/opt/data/temp/
+        - ./aleph/source/:/opt/aleph/
+        - ./aleph/settings.py:/opt/aleph/aleph/settings.py
+      command: bash -c "python /opt/aleph/bin/aleph-server.py"
+      command: bash -c "./opt/aleph/bin/aleph-webui.sh"
+      ports:
+        - "5000:5000"
+      networks:
+        - default
+      depends_on:
+        - elasticsearch
+networks:
+  default:
+    driver: bridge
