@@ -1,0 +1,3 @@
+[submodule "aleph/source"]
+	path = aleph/source
+	url = git@github.com:merces/aleph.git
