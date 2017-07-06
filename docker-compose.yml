@@ -28,7 +28,7 @@ services:
         - default
       depends_on:
         - elasticsearch
-  aleph:
+  aleph-server:
       build: ./aleph/build
       image: pr0teus/aleph:0.2
       volumes:
@@ -36,7 +36,21 @@ services:
         - ./aleph/temp/:/opt/data/temp/
         - ./aleph/source/:/opt/aleph/
         - ./aleph/settings.py:/opt/aleph/aleph/settings.py
-      command: bash -c "python /opt/aleph/bin/aleph-server.py"
+      command: bash -c "./opt/aleph/bin/aleph-webui.sh"
+      ports:
+        - "5000:5000"
+      networks:
+        - default
+      depends_on:
+        - elasticsearch
+  aleph-webui:
+      build: ./aleph/build
+      image: pr0teus/aleph:0.2
+      volumes:
+        - ./aleph/samples/:/opt/data/samples/
+        - ./aleph/temp/:/opt/data/temp/
+        - ./aleph/source/:/opt/aleph/
+        - ./aleph/settings.py:/opt/aleph/aleph/settings.py
       command: bash -c "./opt/aleph/bin/aleph-webui.sh"
       ports:
         - "5000:5000"

@@ -22,7 +22,5 @@ WORKDIR /opt
 RUN pip install -r aleph/requirements.txt
 RUN echo "SECRETE_KEY='`openssl rand -base64 32`'" > aleph/settings.py #Add a secret key
 RUN bin/db_create.py
-RUN bin/aleph-server.py &
-RUN bin/aleph-webui.sh &
 
 EXPOSE 5000
