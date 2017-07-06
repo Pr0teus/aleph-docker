@@ -16,11 +16,11 @@ RUN mkdir -p /opt/data/samples
 RUN mkdir -p /opt/data/temp
 RUN mkdir -p /opt/data/unprocessed_samples
 
-VOLUME ["/opt/data", "/opt/aleph"]
 WORKDIR /opt
-#RUN pip_upgrade --skip-virtualenv-check install -r /opt/aleph/requirements.txt
-RUN pip install -r aleph/requirements.txt
-RUN echo "SECRETE_KEY='`openssl rand -base64 32`'" > aleph/settings.py #Add a secret key
-RUN bin/db_create.py
+RUN git clone https://github.com/merces/aleph.git
+RUN pip-upgrade --skip-virtualenv-check install /opt/aleph/requirements.txt -p all
+RUN cp /opt/aleph/aleph/settings.py.orig /opt/aleph/aleph/settings.py
+RUN printf "\nSECRETE_KEY='`openssl rand -base64 32`'" >> /opt/aleph/aleph/settings.py #Add a secret key
+RUN /opt/aleph/bin/db_create.py
 
 EXPOSE 5000

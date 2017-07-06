@@ -36,9 +36,7 @@ services:
         - ./aleph/temp/:/opt/data/temp/
         - ./aleph/source/:/opt/aleph/
         - ./aleph/settings.py:/opt/aleph/aleph/settings.py
-      command: bash -c "./opt/aleph/bin/aleph-webui.sh"
-      ports:
-        - "5000:5000"
+      command: bash -c "./opt/aleph/bin/aleph-server.py"
       networks:
         - default
       depends_on:
