@@ -7,18 +7,29 @@
 ## Install
 
 ```git clone --recursive http://github.com/pr0teus/aleph-docker.git```
+
 ```cd aleph-docker```
 
-Confiure o Aleph de acordo com o github merces/aleph[http://github.com/merces/aleph.git] no path:
+Confiure o Aleph de acordo com o github do Merces(@mentebinaria) [merces/aleph](http://github.com/merces/aleph.git) no path:
+
+```
 $ aleph/settings.py
+```
 
 ## Run
-```docker-compose build```
-```docker-compose -d up aleph elasticsearch kibana```
+```
+$ docker-compose build
+```
+
+```
+$ docker-compose -d up aleph-server aleph-webui elasticsearch kibana
+```
 
 Now you can visit http://localhost:5000
-|user  |admin       |
-|passwd|changeme12! |
+
+| User  | Password    |
+|-------|-------------|
+| admin | changeme12! |
 
 Then you can see more things at kibana http://localhost:5601
 Any files placed under
